@@ -1,15 +1,21 @@
 const express = require('express');
+const keys = require('./config/key.js')
 
 const app = express();
 
-//routes
+//setting DB
+const mongoose = require('mongoose');
+mongoose.connect(keys.mongoURI);
 
-app.get('/auth',async (req,res)=>{
-    console.log(req.query)
-    res.send("Hello World , It is " + Date.now());
-})
+//setup db models
+require('./model/Account')
 
-const port = 13576;
-app.listen(port, ()=>{
-    console.log("LISTENING ON " + port)
+//setup the routes
+require('./routes/authenticationRoutes')(app)
+
+
+
+
+app.listen(keys.port, ()=>{
+    console.log("LISTENING ON " + keys.port)
 })
